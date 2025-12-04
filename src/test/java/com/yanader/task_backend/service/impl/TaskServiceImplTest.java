@@ -6,13 +6,16 @@ import com.yanader.task_backend.model.dtos.TaskDTO;
 import com.yanader.task_backend.repository.TaskRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
 
+import static org.hamcrest.Matchers.any;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -31,7 +34,8 @@ class TaskServiceImplTest {
         LocalDateTime dueDateTime = LocalDateTime.of(2025, 12, 1, 17, 0, 0);
         Task task = new Task("Emails","Clean up inbox and catch up on emails", Status.CREATED, dueDateTime);
 
-        when(mockTaskRepository.save(task)).thenReturn(task);
+        when(mockTaskRepository.save(ArgumentMatchers.<Task>any()))
+                .thenAnswer(invocation -> invocation.getArgument(0));
 
         Task returnedTask = service.addTask(new TaskDTO("Emails", "Clean up inbox and catch up on emails", Status.CREATED, dueDateTime));
 
@@ -46,7 +50,8 @@ class TaskServiceImplTest {
         LocalDateTime dueDateTime = LocalDateTime.of(2025, 12, 1, 17, 0, 0);
         Task task = new Task("Write Report", Status.CREATED, dueDateTime);
 
-        when(mockTaskRepository.save(task)).thenReturn(task);
+        when(mockTaskRepository.save(ArgumentMatchers.<Task>any()))
+                .thenAnswer(invocation -> invocation.getArgument(0));
 
         Task returnedTask = service.addTask(new TaskDTO("Write Report", Status.CREATED, dueDateTime));
 
