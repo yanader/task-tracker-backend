@@ -1,5 +1,6 @@
 package com.yanader.task_backend.service.impl;
 
+import com.yanader.task_backend.mapper.TaskMapper;
 import com.yanader.task_backend.model.Task;
 import com.yanader.task_backend.model.dtos.TaskDTO;
 import com.yanader.task_backend.repository.TaskRepository;
@@ -11,12 +12,15 @@ public class TaskServiceImpl implements TaskService {
     @Autowired
     TaskRepository taskRepository;
 
+    @Autowired
+    TaskMapper mapper;
+
     @Override
     public Task addTask(TaskDTO submittedTask) {
-        return validTaskDTO(submittedTask) ? taskRepository.save(submittedTask) : null;
+        return validTaskDTO(submittedTask) ? taskRepository.save(mapper.convertTaskDtoToTask(submittedTask)) : null;
     }
 
-    public boolean validTaskDTO(TaskDTO submittedTask) {
+    private boolean validTaskDTO(TaskDTO submittedTask) {
         return (submittedTask.getTitle() != null) && submittedTask.getStatus() != null && submittedTask.getDueDateTime() != null;
     }
 }
