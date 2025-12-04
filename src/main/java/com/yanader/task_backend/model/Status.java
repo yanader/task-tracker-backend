@@ -8,9 +8,9 @@ public enum Status {
     @Override
     public String toString() {
         return switch(this) {
-            case CREATED -> "Created";
-            case IN_PROGRESS -> "In Progress";
-            case COMPLETED -> "Completed";
+            case CREATED -> "CREATED";
+            case IN_PROGRESS -> "IN_PROGRESS";
+            case COMPLETED -> "COMPLETED";
         };
     }
 }

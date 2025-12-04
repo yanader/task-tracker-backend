@@ -24,6 +24,9 @@ public class TaskDTO {
         this.description = description;
     }
 
+    public TaskDTO() {
+    }
+
     public Task convertTaskDtoToTask() {
         return new Task(
                 this.getTitle(),

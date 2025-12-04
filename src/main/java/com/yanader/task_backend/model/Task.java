@@ -30,6 +30,7 @@ public class Task {
     public Task(String title, Status status, LocalDateTime dueDateTime) {
         this.title = title;
         this.status = status;
+        this.description = "";
         this.dueDateTime = dueDateTime;
     }
 

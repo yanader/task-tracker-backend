@@ -1,5 +1,6 @@
 package com.yanader.task_backend.controller;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -8,6 +9,7 @@ import com.yanader.task_backend.model.Task;
 import com.yanader.task_backend.model.dtos.TaskDTO;
 import com.yanader.task_backend.service.impl.TaskServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
+import org.mockito.ArgumentMatchers;
 import org.springframework.http.MediaType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,6 +24,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.LocalDateTime;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -52,17 +55,17 @@ class TaskControllerTest {
         TaskDTO taskToPost = new TaskDTO("Emails", "Catch up on emails", Status.CREATED, dueDate);
         Task addedTask = new Task("Emails", "Catch up on emails", Status.CREATED, dueDate);
 
-        when(mockService.addTask(taskToPost)).thenReturn(addedTask);
+        when(mockService.addTask(any(TaskDTO.class))).thenReturn(addedTask);
 
         this.mockMvcController.perform(
-                        MockMvcRequestBuilders.post("/")
+                        MockMvcRequestBuilders.post("/task")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(taskToPost)))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Emails"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.desc").value("Catch up on emails"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.description").value("Catch up on emails"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.status").value("CREATED"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.dateTime").value(dueDate.toString()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.dueDateTime").value("2025-12-01T17:00:00"));
     }
 
     @Test
@@ -71,17 +74,17 @@ class TaskControllerTest {
         TaskDTO taskToPost = new TaskDTO("Emails", Status.CREATED, dueDate);
         Task addedTask = new Task("Emails", Status.CREATED, dueDate);
 
-        when(mockService.addTask(taskToPost)).thenReturn(addedTask);
+        when(mockService.addTask(any(TaskDTO.class))).thenReturn(addedTask);
 
         this.mockMvcController.perform(
-                        MockMvcRequestBuilders.post("/")
+                        MockMvcRequestBuilders.post("/task")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(taskToPost)))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Emails"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.desc").value(""))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.description").value(""))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.status").value("CREATED"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.dateTime").value(dueDate.toString()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.dueDateTime").value("2025-12-01T17:00:00"));
     }
 
     @Test
@@ -90,13 +93,10 @@ class TaskControllerTest {
         TaskDTO taskToPost = new TaskDTO(null, "Catch up on emails", Status.CREATED, dueDate);
 
         this.mockMvcController.perform(
-                        MockMvcRequestBuilders.put("/")
+                        MockMvcRequestBuilders.post("/task")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(taskToPost)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
-
-
-
 
 }
