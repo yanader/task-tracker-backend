@@ -24,6 +24,14 @@ public class TaskDTO {
         this.description = description;
     }
 
+    public Task convertTaskDtoToTask() {
+        return new Task(
+                this.getTitle(),
+                this.getDescription(),
+                this.getStatus(),
+                this.getDueDateTime()
+        );
+    }
 
     public String getTitle() {
         return title;

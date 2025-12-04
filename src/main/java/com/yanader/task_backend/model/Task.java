@@ -1,5 +1,6 @@
 package com.yanader.task_backend.model;
 
+import com.yanader.task_backend.model.dtos.TaskDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -35,6 +36,15 @@ public class Task {
     public Task(String title, String description, Status status, LocalDateTime dueDateTime) {
         this(title, status, dueDateTime);
         this.description = description;
+    }
+
+    public TaskDTO convertTaskToTaskDto() {
+        return new TaskDTO(
+                this.getTitle(),
+                this.getDescription(),
+                this.getStatus(),
+                this.getDueDateTime()
+        );
     }
 
     public String getTitle() {
