@@ -1,0 +1,5 @@
+1) A casework wants to add a new task.
+
+    Controller: POST /task
+    Service: Task addTask(Task task);
+    Repository: save()
