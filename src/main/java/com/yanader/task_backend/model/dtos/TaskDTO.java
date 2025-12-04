@@ -1,6 +1,7 @@
 package com.yanader.task_backend.model.dtos;
 
 import com.yanader.task_backend.model.Status;
+import com.yanader.task_backend.model.Task;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
@@ -22,6 +23,7 @@ public class TaskDTO {
         this(title, status, dueDateTime);
         this.description = description;
     }
+
 
     public String getTitle() {
         return title;
